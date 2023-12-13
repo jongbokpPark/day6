@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script>
+      addEventListener("load", function () {
+        let king = document.getElementById("king");
+        king.addEventListener("click", function () {
+          // 체크박스 배열 얻기
+          let ch = document.getElementsByName("ch");
+
+          for (let i = 0; ch.length; i++) {
+            ch[i].checked = king.checked;
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h3>전체선택<input type="checkbox" id="king" /></h3>
+
+    <!-- name을 이용하며느 태그요소들은 실행타임에 js의 배열로 생성됨(자동) -->
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+    <input type="checkbox" name="ch" />메일메일메일 <br />
+  </body>
+</html>

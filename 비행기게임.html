@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      #wrapper {
+        width: 1280px;
+        height: 640px;
+        margin: 50px auto 0;
+        background: url("../images/Airplane/game_bg.jpg") center center;
+        position: relative;
+        overflow: hidden;
+      }
+    </style>
+
+    <script>
+      let wrapper;
+      let bgX = 0;
+      let img; // 주인공 이미지 객체
+      let x = 0,
+        y = 0; // 좌표
+
+      let velX = 0; // X축 속도
+      let velY = 0; // Y축 속도
+
+      // 배경 이미지의 좌표를 음수값으로 변경
+      function bgEffect() {
+        bgX--;
+
+        wrapper.style.backgroundPosition = bgX + "px 0px";
+      }
+
+      // 주인공의 x,y축을 호출한다.
+      function move() {
+        // console.log("move 호출중..");
+        x += velX;
+        y += velY;
+
+        // img.style.left = x + "px";
+        // img.style.top = y + "px";
+        img.style.left = Math.max(x, 0) + "px";
+        img.style.top = Math.max(y, 0) + "px";
+      }
+
+      function init() {
+        // 비행기 생성하여 부착
+        img = document.createElement("img");
+        img.src = "..//images/Airplane/plane.png";
+        img.style.width = 60 + "px";
+        img.style.position = "absolute";
+        // img.style.left = 0 + "px";
+        // img.style.top = 100 + "px";
+
+        wrapper = document.getElementById("wrapper");
+        wrapper.appendChild(img);
+      }
+
+      // 비행기 좌표값을 키보드에 따라 수정한다.
+      function control() {
+        let key = event.keyCode;
+        switch (key) {
+          case 37:
+            velX = -5;
+            break; // left
+          case 38:
+            velY = -5;
+            break; // up
+          case 39:
+            velX = 5;
+            break; // right
+          case 40:
+            velY = 5;
+            break; // down
+        }
+      }
+
+      // 키보드를 땠을때
+      function stop() {
+        let key = event.keyCode;
+        switch (key) {
+          case 37:
+            velX = 0;
+            break; // left
+          case 38:
+            velY = 0;
+            break; // up
+          case 39:
+            velX = 0;
+            break; // right
+          case 40:
+            velY = 0;
+            break; // down
+        }
+      }
+
+      // 게임을 만들때 항상 필요한 함수
+      function gameLoop() {
+        bgEffect(); // 배경효과에 대한
+        move(); //주인공의 움직임에 대한
+      }
+
+      addEventListener("load", function () {
+        init();
+        setInterval("gameLoop()", 10);
+        // setInterval("")
+      });
+    </script>
+  </head>
+  <body onkeydown="control()" onkeyup="stop()">
+    <!--  -->
+    <div id="wrapper"></div>
+    <!--  -->
+  </body>
+</html>

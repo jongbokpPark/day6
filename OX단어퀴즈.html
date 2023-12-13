@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #wrapper {
+        width: 450px;
+        height: 500px;
+        margin: 50px auto 0;
+        border: 1px solid black;
+      }
+      #wrapper div {
+        width: 100%;
+        text-align: center;
+      }
+      #quiz {
+        height: 200px;
+        background: aquamarine;
+        font-size: 40px;
+        line-height: 200px;
+      }
+      #key {
+        height: 100px;
+        background: beige;
+      }
+      #key input {
+        width: 100%;
+        height: 100%;
+        font-size: 50px;
+
+        padding: 0;
+        margin: 0;
+        border: 0;
+        text-align: center;
+      }
+      #feedback {
+        height: 150px;
+        background: brown;
+        font-size: 100px;
+        font-weight: bold;
+        line-height: 150px;
+        color: white;
+      }
+      #result {
+        height: 50px;
+        background: blue;
+        font-size: 28px;
+        font-weight: bold;
+        line-height: 50px;
+        color: white;
+      }
+    </style>
+
+    <!-- <script>
+      let keyword;
+      let quiz;
+      let feedback; // 점수
+      let result; //
+      let score = 0; // 점수가 누적될 전역변수
+
+      let n = 0; // 어떤 단어를 접근할지를 결정짓는 index 변수.
+      //게임에 사용할 단어를 메모리에 올리자.
+
+      let word = [
+        "이즈리얼",
+        "자이라",
+        "블리츠크랭크",
+        "제이스",
+        "제라스",
+        "뽀삐",
+        "애니",
+        "모르가나",
+        "피오라",
+        "카이사",
+      ];
+      function next() {
+        if (keyword.value == quiz.innerText) {
+          // 입력한 단어와 퀴즈가 동일할때만
+          n++;
+          quiz.innerText = word[n];
+
+          // 입력한 텍스트는 다시 초기화!
+          keyword.value = "";
+
+          // O, X 여부 출력
+          feedback.innerText = "O";
+          score += 10;
+          setScore();
+        } else {
+          // O, X 여부 출력
+          feedback.innerText = "X";
+          // 입력한 텍스트는 다시 초기화!
+          keyword.value = "";
+          score -= 10;
+          setScore();
+        }
+      }
+
+      // 점수처리(수시로 사용되므로 재사용성을 위해 함수로..)
+      function setScore() {
+        result.innerText = score + "점";
+      }
+
+      function init() {
+        keyword = document.getElementById("keyword");
+        quiz = document.getElementById("quiz");
+        feedback = document.getElementById("feedback");
+        result = document.getElementById("result");
+
+        quiz.innerText = word[0];
+
+        // keyword 위치 커서 올리기
+        keyword.focus();
+
+        // 점수출력
+        setScore();
+
+        keyword.addEventListener("keyup", function () {
+          //수많은 키 중에 엔터를 쳤을떄만...
+          //   alert();
+          if (event.keyCode == 13) {
+            next();
+          }
+        });
+      }
+
+      addEventListener("load", function () {
+        init();
+      });
+    </script> -->
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Random Word Quiz</title>
+      </head>
+      <body>
+        <script>
+          let keyword;
+          let quiz;
+          let feedback; // 점수
+          let result; //
+          let score = 0; // 점수가 누적될 전역변수
+
+          let wordIndex = 0; // 어떤 단어를 접근할지를 결정짓는 index 변수.
+          let shuffledWord = [];
+
+          function shuffleArray(array) {
+            // Fisher-Yates shuffle 알고리즘
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+          }
+
+          let word = [
+            "이즈리얼",
+            "자이라",
+            "블리츠크랭크",
+            "제이스",
+            "제라스",
+            "뽀삐",
+            "애니",
+            "모르가나",
+            "피오라",
+            "카이사",
+          ];
+
+          function next() {
+            if (keyword.value === quiz.innerText) {
+              // 입력한 단어와 퀴즈가 동일할때만
+              wordIndex++;
+              if (wordIndex >= shuffledWord.length) {
+                // 모든 단어를 다 퀴즈했으면 다시 섞기
+                wordIndex = 0;
+                shuffleArray(shuffledWord);
+              }
+              quiz.innerText = shuffledWord[wordIndex];
+
+              // 입력한 텍스트는 다시 초기화!
+              keyword.value = "";
+
+              // O, X 여부 출력
+              feedback.innerText = "O";
+              score += 10;
+              setScore();
+            } else {
+              // O, X 여부 출력
+              feedback.innerText = "X";
+              // 입력한 텍스트는 다시 초기화!
+              keyword.value = "";
+              score -= 10;
+              setScore();
+            }
+          }
+
+          // 점수처리(수시로 사용되므로 재사용성을 위해 함수로..)
+          function setScore() {
+            result.innerText = score + "점";
+          }
+
+          function init() {
+            keyword = document.getElementById("keyword");
+            quiz = document.getElementById("quiz");
+            feedback = document.getElementById("feedback");
+            result = document.getElementById("result");
+
+            shuffledWord = [...word]; // 배열 복사
+            shuffleArray(shuffledWord);
+
+            quiz.innerText = shuffledWord[wordIndex];
+
+            // keyword 위치 커서 올리기
+            keyword.focus();
+
+            // 점수출력
+            setScore();
+
+            keyword.addEventListener("keyup", function (event) {
+              //수많은 키 중에 엔터를 쳤을떄만...
+              if (event.keyCode == 13) {
+                next();
+              }
+            });
+          }
+
+          addEventListener("load", function () {
+            init();
+          });
+        </script>
+      </body>
+    </html>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="quiz">알아맞힐단어</div>
+      <div id="key"><input type="text" id="keyword" /></div>
+      <div id="feedback"></div>
+      <div id="result">0</div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        margin-top: 200px;
+      }
+      #wrapper {
+        width: 600px;
+        height: 600px;
+        /* background-color: bisque; */
+        margin: auto;
+        position: relative;
+      }
+      #frame {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        /* background-color: cadetblue; */
+        position: relative;
+        overflow: hidden;
+      }
+      td {
+        font-size: 0;
+      }
+      td img {
+        display: block;
+      }
+    </style>
+    <script>
+      let table;
+      let tagetX = -200;
+      let tagetY = -200;
+      let x = -1;
+      let y = -1;
+      let a = 0.1;
+
+      function init() {
+        //테이블을 동적으로 생성하고 각 셀에
+        // 이미지를 넣자  프로그래밍적으로...
+        table = document.createElement("table"); // 이것은 <table></table>과 같다
+        let n = 1; // 이미지명을 결정지울 수 있는 지역변수
+
+        for (let i = 1; i <= 3; i++) {
+          let tr = document.createElement("tr"); // 이것은 <tr></tr>과 같다
+
+          for (let a = 1; a <= 3; a++) {
+            let td = document.createElement("td"); // 이것은 <td></td>과 같다
+            // td.innerText = i + "층" + a + "호";
+            // td에 이미지 넣기
+            let img = document.createElement("img");
+            img.src = "../images/mt/" + n + ".jpg";
+            img.style.width = 200 + "px";
+            img.style.height = 200 + "px";
+            // img.style.position = "relative";
+            // img.style.top = 0 + "px";
+            // img.style.left = 0 + "px";
+
+            n++;
+            td.appendChild(img);
+            tr.appendChild(td);
+          }
+          table.appendChild(tr);
+        }
+
+        table.style.border = "1px solid red";
+        table.style.width = 600 + "px";
+        table.style.height = 600 + "px";
+        table.style.position = "absolute"; //frame 를 기준으로
+        table.style.left = -200 + "px";
+        table.style.top = -200 + "px";
+
+        //frame div에 table 추가
+        let frame = document.getElementById("frame");
+        frame.appendChild(table);
+      }
+
+      // 키보드에 방향키를 누르면 table에 좌료를 조정한다.
+      function control() {
+        let key = event.keyCode; // 아슼키코드 받기
+        switch (key) {
+          case 37:
+            x = x - 1;
+            break; // 좌측 이동
+          case 39:
+            x = x + 1;
+            break; // 우측 이동
+          case 38:
+            y = y - 1;
+            break; // 위쪽 이동
+          case 40:
+            y = y + 1;
+            break; // 아래쪽 이동
+        }
+
+        if (x > 0) {
+          x = 0;
+        } else if (x < -2) {
+          x = -2;
+        } else if (y > 0) {
+          y = 0;
+        } else if (y < -2) {
+          y = -2;
+        }
+
+        // x, y의 최대값을 제한하기
+        tagetX = x * 200;
+        tagetY = y * 200;
+      }
+
+      // 부드러운 효과를 내기 위해서 감속도 공식을 이용한다
+      // 위치 = 현위치 + a*(목표-현위치)
+      function move() {
+        // 테이블에 좌표를 변경
+        table.style.left =
+          parseFloat(table.style.left) +
+          a * (tagetX - parseFloat(table.style.left)) +
+          "px";
+
+        table.style.top =
+          parseFloat(table.style.top) +
+          a * (tagetY - parseFloat(table.style.top)) +
+          "px";
+      }
+
+      function getRandom() {
+        let r = Math.random();
+        x = parseInt(r * -3); //
+
+        let r2 = Math.random();
+        y = parseInt(r2 * -3); //
+
+        tagetX = x * 200;
+        tagetY = y * 200;
+      }
+
+      addEventListener("load", function () {
+        init();
+        setInterval("move()", 10);
+        setInterval("getRandom()", 2000);
+      });
+    </script>
+  </head>
+
+  <body onkeydown="control()">
+    <div id="wrapper">
+      <div id="frame"></div>
+    </div>
+  </body>
+</html>

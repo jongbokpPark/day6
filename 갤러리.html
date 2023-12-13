@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #wrapper {
+        width: 1000px;
+        height: 800px;
+        background-color: yellow;
+        margin: 0 auto;
+      }
+      #wrapper div {
+        width: 100%;
+      }
+      #wrapper div#header,
+      #wrapper div#footer {
+        height: 100px;
+      }
+      #header {
+        background-color: rgb(216, 216, 48);
+      }
+      #content {
+        height: 600px;
+        background: navy;
+      }
+      #content img {
+        width: 100%;
+        height: 100%;
+      }
+      #footer {
+        background-color: cadetblue;
+        position: relative;
+      }
+    </style>
+
+    <script>
+      let arr = [
+        "pexels235990.jpg",
+        "pexels273886.jpg",
+        "pexels386025.jpg",
+        "pexels457881.jpg",
+        "pexels462162.jpg",
+        "pexels847393.jpg",
+        "pexels994605.jpg",
+        "pexels1350197.jpg",
+        "pexels1655166.jpg",
+        "sunriseocean.jpg",
+      ];
+
+      let content;
+      let footer;
+      let box;
+      let a = 0.1;
+      let targetX = 0;
+      let detail;
+      let currentIndex = 0; // 현재 내가 가리키고 있는 이미지 index
+
+      function ceratrImage() {
+        for (let i = 0; i < arr.length; i++) {
+          let img = document.createElement("img");
+          img.src = "../images/ocean/" + arr[i];
+          img.style.width = 90 + "px";
+          img.style.height = 90 + "px";
+          img.style.position = "absolute";
+          img.style.left = 5 + (90 + 5) * i + "px";
+          img.style.top = 5 + "px";
+
+          // 이미지마다 클릭이벤트를 걸자
+          img.addEventListener("click", function () {
+            // console.log("나의 위치는?", 5 + (90 + 5) * i);
+            targetX = (90 + 5) * i;
+
+            console.log("저는 배열의", i, "번째 입니다");
+            currentIndex = i;
+
+            // 큰이미지 보여주기
+            showDeTail(img.src);
+          });
+
+          footer.appendChild(img);
+        }
+      }
+
+      function ceratrPointer() {
+        box = document.createElement("div");
+        box.style.border = "5px solid red";
+        box.style.width = 90 + "px";
+        box.style.height = 90 + "px";
+        box.style.position = "absolute";
+        box.style.left = 0 + "px";
+        box.style.top = 0 + "px";
+
+        footer.appendChild(box);
+      }
+
+      function pointerMove() {
+        //사각형을 움직이게 하자  X축으로
+        box.style.left =
+          parseFloat(box.style.left) +
+          a * (targetX - parseFloat(box.style.left)) +
+          "px";
+      }
+
+      function gameLoop() {
+        pointerMove();
+      }
+
+      // 큰 이미지 보여주기
+      function showDeTail(path) {
+        detail.src = path;
+      }
+
+      // 다음사진나오게
+      function next() {
+        currentIndex++;
+        targetX = (90 + 5) * currentIndex;
+        showDeTail("../images/ocean/" + arr[currentIndex]);
+      }
+
+      // 이전사진나오게
+      function prev() {
+        currentIndex--;
+        targetX = (90 + 5) * currentIndex;
+        showDeTail("../images/ocean/" + arr[currentIndex]);
+      }
+
+      // 초기화
+      function init() {
+        content = document.getElementById("content");
+        footer = document.getElementById("footer");
+        detail = document.getElementById("detail");
+
+        ceratrImage();
+        ceratrPointer(); // 초인터 역활의 사각형 생성
+        showDeTail("../images/ocean/" + arr[0]);
+      }
+
+      addEventListener("load", function () {
+        init();
+        setInterval("gameLoop()", 10);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <button onclick="prev()">이전</button>
+        <button onclick="next()">다음</button>
+      </div>
+      <div id="content">
+        <img src="" alt="" id="detail" />
+      </div>
+      <div id="footer"></div>
+    </div>
+  </body>
+</html>
